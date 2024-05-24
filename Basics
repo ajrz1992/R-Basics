@@ -1,0 +1,227 @@
+0.15 * 19.71
+install.packages("dslabs")
+data(murders)
+library(dslabs)
+install.packages(c("tidyverse", "dslabs"))
+
+a <- 1
+b <- 1
+c <- -1
+print(a)
+a
+ls()
+
+#Quadratic Formula
+(-b + sqrt(b^2 - 4*a*c) ) / ( 2*a )
+(-b - sqrt(b^2 - 4*a*c) ) / ( 2*a )
+
+
+#Functions
+log(8)
+log(a)
+args(log)
+log(8, base = 2)
+log(x = 8, base = 2)
+log(8,2)
+log(base = 2, x = 8)
+2 ^ 3
+pi
+solution_1 <- (-b + sqrt(b^2 - 4*a*c)) / (2*a)
+solution_2 <- (-b - sqrt(b^2 - 4*a*c)) / (2*a)
+x <- seq(1, n)
+n <- 1000
+sum(x)
+log10(x^10)
+
+#DataSet Commands
+class(a)
+class(murders)
+str(murders)
+head(murders)
+murders$population
+names
+#We can convert matrices into data frames using the function
+as.data.frame(mat)
+
+
+
+
+#Vectors, Numerics, Characters and logical
+pop <- murders$population
+length(pop)
+z <- 3 == 2
+#> [1] FALSE
+
+
+#Help
+help("log")
+help("+")
+?"+"
+help(">")
+?">"
+?Comparison
+
+#There are several datasets that are included for users
+data()
+co2
+
+
+#Factors
+
+class(murders$region)
+#Factors are useful for storing categorical data.
+levels(murders$region)
+
+region <- murders$region
+value <- murders$total
+region <- reorder(region, value, FUN = sum)
+levels(region)
+
+
+#Lists
+class(record)
+record[["student_id"]]
+record2[[1]]
+
+#Matrices
+mat <- matrix(1:12, 4, 3)
+mat[2, 3]
+mat[2, ]
+mat[, 3]
+mat[, 2:3]
+mat[1:2, 2:3]
+as.data.frame(mat)
+data("murders")
+murders[25, 1]
+murders[2:3, ]
+
+
+#Vectors
+codes <- c(380, 124, 818)
+country <- c("italy", "canada", "egypt")
+country <- c('italy', 'canada', 'egypt')
+country <- c(italy, canada, egypt)
+codes <- c(italy = 380, canada = 124, egypt = 818)
+class(codes)
+names(codes)
+codes <- c("italy" = 380, "canada" = 124, "egypt" = 818)
+
+
+#Sequences
+seq(1, 10)
+seq(1, 10, 2)
+1:10
+class(1:10)
+class(seq(1, 10, 0.5))
+
+
+#Subsetting
+codes[2]
+codes[c(1,3)]
+codes[1:2]
+codes["canada"]
+
+#Coercion
+
+#In general, coercion is an attempt by R to be flexible with data types. When an entry does
+#not match the expected, some of the prebuilt R functions try to guess what was meant
+#before throwing an error.
+
+x <- c(1, "canada", 3)
+x <- 1:5
+y <- as.character(x)
+as.numeric(y)
+
+
+#Not availables (NA)
+x <- c("1", "b", "3")
+as.numeric(x)
+x <- c("1", "3", "5")
+
+
+
+#Sorting
+library(dslabs)
+data(murders)
+#sorts a vector in increasing order.
+sort(murders$total)
+
+#order
+#Ordena de menor a mayor.
+x <- c(31, 4, 15, 92, 65)
+sort(x)
+#Return Index.
+index <- order(x)
+x[index]
+murders$state[1:6]
+murders$abb[1:6]
+ind <- order(murders$total)
+murders$abb[ind]
+
+#max and which.max
+max(murders$total)
+#for the index of the largest value:
+i_max <- which.max(murders$total)
+murders$state[i_max]
+
+
+#rank
+#For any given vector it returns a vector with the rank of the first
+#entry, second entry, etc., of the input vector
+x <- c(31, 4, 15, 92, 65)
+rank(x)
+#Te indica cual es el indice que le corresponde de izquierda a derecha.
+
+
+#original sort order rank
+#     31    4    2     3
+#     4     15   3     1
+#     15    31   1     2
+#     92    65   5     5
+#     65    92   4     4
+
+     
+#Reciclyng
+#vectors are added elementwise.
+     x <- c(1,2,3)
+     y <- c(10, 20, 30, 40, 50, 60, 70)
+     x+y
+
+
+#Vector arithmetics
+     library(dslabs)
+     data("murders")
+     murders$state[which.max(murders$population)]     
+
+     
+#Rescaling a vector
+     inches <- c(69, 62, 66, 70, 70, 73, 67, 73, 67, 70)
+     inches * 2.54
+     inches - 69
+     murder_rate <- murders$total / murders$population * 100000
+     murders$abb[order(murder_rate)]
+     
+#Subsetting with logicals
+     ind <- murder_rate < 0.710
+     ind <- murder_rate <= 0.71
+     murders$state[ind]
+     sum(ind)
+     
+#Logical operators
+     west <- murders$region == "West"
+     safe <- murder_rate <= 1
+     ind <- safe & west
+     murders$state[ind]
+     
+     
+#which
+     ind <- which(murders$state == "California")
+     murder_rate[ind]
+     
+#match
+     ind <- match(c("New York", "Florida", "Texas"), murders$state)
+     
+#%IN%
+     c("Boston", "Dakota", "Washington") %in% murders$state
+     match(c("New York", "Florida", "Texas"), murders$state)
+     which(murders$state%in%c("New York", "Florida", "Texas"))
