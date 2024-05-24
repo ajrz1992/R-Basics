@@ -1,0 +1,711 @@
+#Monte Carlo simulation
+beads <- rep(c("red", "blue"), times = c(2,3))    # create an urn with 2 red, 3 blue 
+beads    # view beads object 
+sample(beads, 1)    # sample 1 bead at random 
+B <- 10000    # number of times to draw 1 bead 
+events <- replicate(B, sample(beads, 1))    # draw 1 bead, B times 
+tab <- table(events)    # make a table of outcome counts 
+tab    # view count table 
+prop.table(tab)    # view table of outcome proportions 
+
+#Suppose you have the vector beads
+beads <- rep(c("red", "blue"), times = c(2,3)) 
+#To find the probability of drawing a blue bead at random, you can run: 
+mean(beads == "blue") 
+
+#Discrete Probability 
+#Event  
+
+#Things that can happen when something happens by chance 
+
+#creating an urn : 
+
+#1 :  We use the rep function to create an urn 
+
+beads <- rep(c("red", "blue"), times = c(2,3)) 
+beads 
+
+## [1] "red"  "red"  "blue" "blue" "blue" 
+
+# we use sample() function to pick one at random 
+
+sample(beads,1) 
+
+## [1] "blue" 
+
+#sample With replacement 
+
+#replicate() function  
+
+#we use replicate function to repeat any experiment any number of times 
+
+B <-  10000 
+
+events <- replicate(B,sample(beads,1)) 
+
+table(events) 
+
+## events 
+
+## blue  red  
+
+## 5936 4064 
+
+prop.table(table(events)) 
+
+## events 
+
+##   blue    red  
+
+## 0.5936 0.4064 
+
+#We don't need to use replicate function because the function sample() 
+
+#has an argument that permits us to pick more than one element from urn. However, this action occurs without replacement, by deafult i.e. after a bead is selected it is not put back in the urn. 
+
+#Sample with Replacement 
+
+events<-sample(beads, B, replace = TRUE) 
+
+prop.table(table(events)) 
+
+## events 
+
+##   blue    red  
+
+## 0.6004 0.3996 
+
+#Independent Events 
+
+#2 events are independent events if the outcome of one does not affect the outcome of other. The classic example are coin tosses. Every time, we toss a fair coin, the probability of seeing heads is 0.5 regardless of what previous tosses have revealed.  
+
+#The same is true when we pick the beads from an urn with replacement. 
+
+#Dependent Events 
+
+#Many examples of events that are not independent comes from card Games. 
+
+#Let the Events  
+
+#A : getting a king from a deck of 52 cards 
+
+#B : second drawn card is a king given that the first was a king 
+
+#P(A) = 4/52 = 1/13 
+
+#P(B/A) = 3/51 = 1/17 
+
+#Multiplication Rule : BLACKJACK 
+
+#P(A and B) = P(A) * P(B/A) 
+
+#P(A and B and C) = P(A) * P(B/A) * P(C/A and B) 
+
+#A : getting an ace 
+
+#B : getting a face card or a 10 
+
+#P(A and B) = P(A) * P(B/A) = 4/52 * 16/51 = 16/663 = 0.02 approx. 
+
+#Multiplication rule for independent events 
+
+#P(A and B and C) = P(A) * P(B) * P(C) 
+
+#One ball will be drawn at random from a box containing: 3 cyan balls, 5 magenta balls, and 7 yellow balls. 
+
+#What is the probability that the ball will be cyan? 
+
+#Ans : 3/15 = 1/5 
+
+cyan <- 3 
+
+magneta <- 5 
+
+yellow<-7 
+
+p_1 = cyan/(cyan + magneta + yellow) 
+
+p_1 
+
+## [1] 0.2 
+
+#One ball will be drawn at random from a box containing: 3 cyan balls, 5 magenta balls, and 7 yellow balls. 
+
+#What is the probability that the ball will not be cyan? 
+
+#Ans : 12/15 = 4/5 
+
+p_2 = 1 - p_1 
+
+p_2 
+
+## [1] 0.8 
+
+#Instead of taking just one draw, consider taking two draws. You take the second draw without returning the first draw to the box. We call this sampling without replacement. 
+
+#What is the probability that the first draw is cyan and that the second draw is not cyan? 
+
+#Ans : Let events : 
+
+#A : the first draw is cyan 
+
+#B : the second draw is not cyan 
+
+#P(A) = 3/15 = 1/5 
+
+#P(B/A) = 12/14 = 6 / 7 
+
+#P(A and B ) = P(A) * P(B/A) = 1/5 * 6/7 = 6/35 
+
+ 
+
+cyan <- 3 
+
+magenta <- 5 
+
+yellow <- 7 
+
+ 
+
+# The variable `p_1` is the probability of choosing a cyan ball from the box on the first draw. 
+
+p_1 <- cyan / (cyan + magenta + yellow) 
+
+ 
+
+# Assign a variable `p_2` as the probability of not choosing a cyan ball on the second draw without replacement. 
+
+p_2 <- 1 - (cyan - 1) / (cyan + magenta + yellow - 1) 
+
+ 
+
+# Calculate the probability that the first draw is cyan and the second draw is not cyan. 
+
+p_1 * p_2 
+
+## [1] 0.1714286 
+
+#Now repeat the experiment, but this time, after taking the first draw and recording the color, return it back to the box and shake the box. We call this sampling with replacement. 
+
+#What is the probability that the first draw is cyan and that the second draw is not cyan? 
+
+#Ans : Let Events :  
+
+#A : first draw is cyan 
+
+#B : the second draw is not cyan 
+
+#P(A) = 1/5 
+
+#P(B) = 4/5 
+#P(A and B) = P(A) * P(B) = 1/5 * 4/5 = 4/25 
+cyan <- 3 
+magenta <- 5 
+yellow <- 7 
+
+
+# The variable 'p_1' is the probability of choosing a cyan ball from the box on the first draw. 
+p_1 <- cyan / (cyan + magenta + yellow) 
+
+
+# Assign a variable 'p_2' as the probability of not choosing a cyan ball on the second draw with replacement. 
+p_2 <- 1 - (cyan) / (cyan + magenta + yellow) 
+
+# Calculate the probability that the first draw is cyan and the second draw is not cyan using `p_1` and `p_2`. 
+p_1 * p_2 
+## [1] 0.16 
+
+#Introducing paste() and expand.grid() 
+number <- "Three" 
+suit <- "Hearts" 
+paste(number, suit) 
+
+# joining vectors element-wise with paste 
+paste(letters[1:5], as.character(1:5)) 
+
+# generating combinations of 2 vectors with expand.grid 
+expand.grid(pants = c("blue", "black"), shirt = c("white", "grey", "plaid")) 
+
+#Code: Generating a deck of cards 
+
+suits <- c("Diamonds", "Clubs", "Hearts", "Spades") 
+numbers <- c("Ace", "Deuce", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King") 
+deck <- expand.grid(number = numbers, suit = suits) 
+deck <- paste(deck$number, deck$suit) 
+
+# probability of drawing a king 
+kings <- paste("King", suits) 
+mean(deck %in% kings) 
+
+Code: Permutations and combinations 
+
+Correction: The code shown does not generate all 7 digit phone numbers because phone numbers can have repeated digits. It generates all possible 7 digit numbers without repeats. 
+library(gtools) 
+permutations(5,2)    # ways to choose 2 numbers in order from 1:5 
+all_phone_numbers <- permutations(10, 7, v = 0:9) 
+n <- nrow(all_phone_numbers) 
+index <- sample(n, 5) 
+all_phone_numbers[index,] 
+permutations(3,2)    # order matters 
+combinations(3,2)    # order does not matter 
+
+Code: Permutations and combinations 
+
+Correction: The code shown does not generate all 7 digit phone numbers because phone numbers can have repeated digits. It generates all possible 7 digit numbers without repeats. 
+
+library(gtools) 
+permutations(5,2)    # ways to choose 2 numbers in order from 1:5 
+all_phone_numbers <- permutations(10, 7, v = 0:9) 
+n <- nrow(all_phone_numbers) 
+index <- sample(n, 5) 
+all_phone_numbers[index,] 
+
+permutations(3,2)    # order matters 
+combinations(3,2)    # order does not matter 
+
+
+
+Code: Permutations and combinations 
+
+Correction: The code shown does not generate all 7 digit phone numbers because phone numbers can have repeated digits. It generates all possible 7 digit numbers without repeats. 
+library(gtools) 
+permutations(5,2)    # ways to choose 2 numbers in order from 1:5 
+all_phone_numbers <- permutations(10, 7, v = 0:9) 
+n <- nrow(all_phone_numbers) 
+index <- sample(n, 5) 
+all_phone_numbers[index,] 
+permutations(3,2)    # order matters 
+combinations(3,2)    # order does not matter 
+
+
+Code: Monte Carlo simulation of natural 21 in blackjack 
+
+Note that your exact values will differ because the process is random and the seed is not set. 
+
+# code for one hand of blackjack 
+
+hand <- sample(deck, 2) 
+
+hand 
+
+ 
+
+# code for B=10,000 hands of blackjack 
+B <- 10000 
+results <- replicate(B, { 
+
+    hand <- sample(deck, 2) 
+
+    (hand[1] %in% aces & hand[2] %in% facecard) | (hand[2] %in% aces & hand[1] %in% facecard) 
+}) 
+mean(results) 
+
+
+Code: The birthday problem 
+
+# checking for duplicated bdays in one 50 person group 
+n <- 50 
+bdays <- sample(1:365, n, replace = TRUE)    # generate n random birthdays 
+any(duplicated(bdays))    # check if any birthdays are duplicated 
+
+# Monte Carlo simulation with B=10000 replicates 
+B <- 10000 
+results <- replicate(B, {    # returns vector of B logical values 
+
+    bdays <- sample(1:365, n, replace = TRUE) 
+
+    any(duplicated(bdays)) 
+}) 
+mean(results)    # calculates proportion of groups with duplicated bdays 
+
+
+Code: Function for birthday problem Monte Carlo simulations 
+# function to calculate probability of shared bdays across n people 
+compute_prob <- function(n, B = 10000) { 
+same_day <- replicate(B, { 
+    	bdays <- sample(1:365, n, replace = TRUE) 
+        any(duplicated(bdays)) 
+    }) 
+    mean(same_day) 
+} 
+n <- seq(1, 60) 
+
+
+Code: Element-wise operation over vectors and sapply 
+
+x <- 1:10 
+sqrt(x)    # sqrt operates on each element of the vector 
+y <- 1:10 
+x*y    # * operates element-wise on both vectors 
+compute_prob(n)    # does not iterate over the vector n without sapply 
+x <- 1:10 
+sapply(x, sqrt)    # this is equivalent to sqrt(x) 
+prob <- sapply(n, compute_prob)    # element-wise application of compute_prob to n 
+plot(n, prob) 
+
+Code: Computing birthday problem probabilities with sapply 
+# function for computing exact probability of shared birthdays for any n 
+exact_prob <- function(n){ 
+    prob_unique <- seq(365, 365-n+1)/365   # vector of fractions for mult. rule 
+    1 - prod(prob_unique)    # calculate prob of no shared birthdays and subtract from 1 
+} 
+# applying function element-wise to vector of n values 
+eprob <- sapply(n, exact_prob) 
+
+# plotting Monte Carlo results and exact probabilities on same graph 
+plot(n, prob)    # plot Monte Carlo results 
+lines(n, eprob, col = "red")    # add line for exact prob 
+
+
+
+#Exercise 2. Sampling with replacement 
+
+#Say you’ve drawn 5 balls from the a box that has 3 cyan balls, 5 magenta balls, and 7 yellow balls, with replacement, and all have been yellow. 
+#What is the probability that the next one is yellow? 
+
+#Instructions 
+#Assign the variable p_yellow as the probability of choosing a yellow ball on the first draw. 
+#Using the variable p_yellow, calculate the probability of choosing a yellow ball on the sixth draw. 
+
+cyan <- 3 
+magenta <- 5 
+yellow <- 7 
+
+# Assign the variable 'p_yellow' as the probability that a yellow ball is drawn from the box. 
+p_yellow <- yellow / (cyan + magenta + yellow) 
+
+# Using the variable 'p_yellow', calculate the probability of drawing a yellow ball on the sixth draw. Print this value to the console. 
+p_yellow 
+
+#Exercise 3. Rolling a die 
+If you roll a 6-sided die once, what is the probability of not seeing a 6? If you roll a 6-sided die six times, what is the probability of not seeing a 6 on any of those rolls? 
+
+Instructions 
+Assign the variable p_no6 as the probability of not seeing a 6 on a single roll. 
+Then, calculate the probability of not seeing a 6 on six rolls using p_no6.
+
+# Assign the variable 'p_no6' as the probability of not seeing a 6 on a single roll. 
+p_no6 <- 1 - (1/6) 
+
+# Calculate the probability of not seeing a 6 on six rolls using `p_no6`. Print your result to the console: do not assign it to a variable. 
+p_no6^6 
+
+Exercise 4. Probability the Celtics win a game 
+
+Two teams, say the Celtics and the Cavs, are playing a seven game series. The Cavs are a better team and have a 60% chance of winning each game. 
+
+What is the probability that the Celtics win at least one game? Remember that the Celtics must win one of the first four games, or the series will be over! 
+
+Calculate the probability that the Cavs will win the first four games of the series. 
+Calculate the probability that the Celtics win at least one game in the first four games of the series. 
+
+# Assign the variable `p_cavs_win4` as the probability that the Cavs will win the first four games of the series. 
+p_cavs_win4 <- .6^4
+
+# Using the variable `p_cavs_win4`, calculate the probability that the Celtics win at least one game in the first four games of the series. 
+1 - p_cavs_win4 
+
+Exercise 5. Monte Carlo simulation for Celtics winning a game
+Create a Monte Carlo simulation to confirm your answer to the previous problem by estimating how frequently the Celtics win at least 1 of 4 games. Use B <- 10000 simulations. 
+The provided sample code simulates a single series of four random games, simulated_games. 
+
+Instructions 
+
+Use the replicate function for B <- 10000 simulations of a four game series. The results of replicate should be stored to a variable named celtic_wins. 
+Within each simulation, replicate the sample code to simulate a four-game series named simulated_games. Then, use the any function to indicate whether the four-game series contains at least one win for the Celtics. Perform these operations in two separate steps. 
+Use the mean function on celtic_wins to find the proportion of simulations that contain at least one win for the Celtics out of four games. 
+
+# This line of example code simulates four independent random games where the Celtics either lose or win. Copy this example code to use within the `replicate` function. 
+simulated_games <- sample(c("lose","win"), 4, replace = TRUE, prob = c(0.6, 0.4)) 
+
+# The variable 'B' specifies the number of times we want the simulation to run. Let's run the Monte Carlo simulation 10,000 times. 
+B <- 10000 
+
+
+# Use the `set.seed` function to make sure your answer matches the expected result after random sampling. 
+set.seed(1) 
+
+
+# Create an object called `celtic_wins` that replicates two steps for B iterations: (1) generating a random four-game series `simulated_games` using the example code, then (2) determining whether the simulated series contains at least one win for the Celtics. 
+celtic_wins <- replicate(B, { 
+  simulated_games <- sample(c("lose","win"), 4, replace = TRUE, prob = c(0.6, 0.4)) 
+  any(simulated_games=="win") 
+}) 
+
+# Calculate the frequency out of B iterations that the Celtics won at least one game. Print your answer to the console. 
+mean(celtic_wins) 
+
+Code: Monte Carlo simulation of stick strategy 
+B <- 10000 
+stick <- replicate(B, { 
+doors <- as.character(1:3) 
+prize <- sample(c("car","goat","goat"))    # puts prizes in random order 
+prize_door <- doors[prize == "car"]    # note which door has prize 
+my_pick  <- sample(doors, 1)    # note which door is chosen 
+show <- sample(doors[!doors %in% c(my_pick, prize_door)],1)    # open door with no prize that isn't chosen 
+stick <- my_pick    # stick with original door 
+stick == prize_door    # test whether the original door has the prize 
+}) 
+mean(stick)    # probability of choosing prize door when sticking 
+
+Code: Monte Carlo simulation of switch strategy 
+switch <- replicate(B, { 
+doors <- as.character(1:3) 
+prize <- sample(c("car","goat","goat"))    # puts prizes in random order 
+prize_door <- doors[prize == "car"]    # note which door has prize 
+my_pick  <- sample(doors, 1)    # note which door is chosen first 
+show <- sample(doors[!doors %in% c(my_pick, prize_door)], 1)    # open door with no prize that isn't chosen 
+switch <- doors[!doors%in%c(my_pick, show)]    # switch to the door that wasn't chosen first or opened 
+switch == prize_door    # test whether the switched door has the prize 
+}) 
+mean(switch)    # probability of choosing prize door when switching 
+
+
+Exercise 1. The Cavs and the Warriors 
+Two teams, say the Cavs and the Warriors, are playing a seven game championship series. The first to win four games wins the series. The teams are equally good, so they each have a 50-50 chance of winning each game. 
+If the Cavs lose the first game, what is the probability that they win the series? 
+
+Instructions 
+Assign the number of remaining games to the variable n. 
+Assign a variable outcomes as a vector of possible outcomes in a single game, where 0 indicates a loss and 1 indicates a win for the Cavs. 
+Assign a variable l to a list of all possible outcomes in all remaining games. Use the rep function to create a list of n games, where each game consists of list(outcomes). 
+Use the expand.grid function to create a data frame containing all the combinations of possible outcomes of the remaining games. 
+Use the rowSums function to identify which combinations of game outcomes result in the Cavs winning the number of games necessary to win the series. 
+Use the mean function to calculate the proportion of outcomes that result in the Cavs winning the series and print your answer to the console. 
+
+# Assign a variable 'n' as the number of remaining games. 
+n <- 6 
+
+# Assign a variable `outcomes` as a vector of possible game outcomes, where 0 indicates a loss and 1 indicates a win for the Cavs. 
+outcomes <- c(0,1) 
+
+# Assign a variable `l` to a list of all possible outcomes in all remaining games. Use the `rep` function on `list(outcomes)` to create list of length `n`. 
+l <- rep(list(outcomes), n) 
+
+# Create a data frame named 'possibilities' that contains all combinations of possible outcomes for the remaining games. 
+possibilities <- expand.grid(l) 
+
+# Create a vector named 'results' that indicates whether each row in the data frame 'possibilities' contains enough wins for the Cavs to win the series. 
+results <- rowSums(possibilities)>=4 
+
+# Calculate the proportion of 'results' in which the Cavs win the series. Print the outcome to the console. 
+mean(results) 
+
+
+Exercise 2. The Cavs and the Warriors - Monte Carlo 
+Confirm the results of the previous question with a Monte Carlo simulation to estimate the probability of the Cavs winning the series after losing the first game. 
+
+Use the replicate function to replicate the sample code for B <- 10000 simulations. 
+Use the sample function to simulate a series of 6 games with random, independent outcomes of either a loss for the Cavs (0) or a win for the Cavs (1) in that order. Use the default probabilities to sample. 
+Use the sum function to determine whether a simulated series contained at least 4 wins for the Cavs. 
+Use the mean function to find the proportion of simulations in which the Cavs win at least 4 of the remaining games. Print your answer to the console. 
+
+# The variable `B` specifies the number of times we want the simulation to run. Let's run the Monte Carlo simulation 10,000 times. 
+B <- 10000 
+
+# Use the `set.seed` function to make sure your answer matches the expected result after random sampling. 
+set.seed(1) 
+
+
+# Create an object called `results` that replicates for `B` iterations a simulated series and determines whether that series contains at least four wins for the Cavs. 
+results <- replicate(B, { 
+  cavs_wins <- sample(c(0,1), 6, replace = TRUE) 
+  sum(cavs_wins)>=4  
+}) 
+# Calculate the frequency out of `B` iterations that the Cavs won at least four games in the remainder of the series. Print your answer to the console.  
+mean(results) 
+
+Exercise 3. A and B play a series - part 1 
+
+Two teams,  and , are playing a seven series game series. Team is better than team  and has a >0.5 chance of winning each game. 
+Use the function sapply to compute the probability, call it Pr of winning for p <- seq(0.5, 0.95, 0.025). 
+Then plot the result plot(p, Pr). 
+
+# Let's assign the variable 'p' as the vector of probabilities that team A will win. 
+p <- seq(0.5, 0.95, 0.025) 
+
+# Given a value 'p', the probability of winning the series for the underdog team B can be computed with the following function based on a Monte Carlo simulation: 
+prob_win <- function(p){ 
+  B <- 10000 
+  result <- replicate(B, { 
+    b_win <- sample(c(1,0), 7, replace = TRUE, prob = c(1-p, p)) 
+    sum(b_win)>=4 
+    }) 
+  mean(result) 
+} 
+# Apply the 'prob_win' function across the vector of probabilities that team A will win to determine the probability that team B will win. Call this object 'Pr'. 
+Pr <- sapply(p, prob_win) 
+
+# Plot the probability 'p' on the x-axis and 'Pr' on the y-axis. 
+plot(p, Pr) 
+
+Exercise 4. A and B play a series - part 2 
+Repeat the previous exercise, but now keep the probability that team  wins fixed at p <- 0.75 and compute the probability for different series lengths. For example, wins in best of 1 game, 3 games, 5 games, and so on through a series that lasts 25 games. 
+Use the seq function to generate a list of odd numbers ranging from 1 to 25. 
+Use the function sapply to compute the probability, call it Pr, of winning during series of different lengths. 
+Then plot the result plot(N, Pr). 
+
+# Given a value 'p', the probability of winning the series for the underdog team B can be computed with the following function based on a Monte Carlo simulation: 
+prob_win <- function(N, p=0.75){ 
+      B <- 10000 
+      result <- replicate(B, { 
+        b_win <- sample(c(1,0), N, replace = TRUE, prob = c(1-p, p)) 
+        sum(b_win)>=(N+1)/2 
+        }) 
+      mean(result) 
+    } 
+
+# Assign the variable 'N' as the vector of series lengths. Use only odd numbers ranging from 1 to 25 games. 
+N <- seq(1, 25, by=2) 
+
+# Apply the 'prob_win' function across the vector of series lengths to determine the probability that team B will win. Call this object `Pr`. 
+Pr <- sapply(N, prob_win) 
+
+# Plot the number of games in the series 'N' on the x-axis and 'Pr' on the y-axis. 
+plot(N, Pr) 
+
+#Run a Monte Carlo simulation on this vector representing the countries of the 8 runners in this race: 
+runners <- c("Jamaica", "Jamaica", "Jamaica", "USA", "Ecuador", "Netherlands", "France", "South Africa")
+Assessment - Esophageal cancer and alcohol/tobacco use 
+
+3., 4., 5. and 6. Case-control studies help determine whether certain exposures are associated with outcomes such as developing cancer. The built-in dataset esoph contains data from a case-control study in France comparing people with esophageal cancer (cases, counted in ncases) to people without esophageal cancer (controls, counted in ncontrols) that are carefully matched on a variety of demographic and medical characteristics. The study compares alcohol intake in grams per day (alcgp) and tobacco intake in grams per day (tobgp) across cases and controls grouped by age range (agegp). 
+The dataset is available in base R and can be called with the variable name esoph: 
+head(esoph) 
+##   agegp     alcgp    tobgp ncases ncontrols 
+## 1 25-34 0-39g/day 0-9g/day      0        40 
+## 2 25-34 0-39g/day    10-19      0        10 
+## 3 25-34 0-39g/day    20-29      0         6 
+## 4 25-34 0-39g/day      30+      0         5 
+## 5 25-34     40-79 0-9g/day      0        27 
+## 6 25-34     40-79    10-19      0         7 
+You will be using this dataset to answer the following four multi-part questions (Questions 3-6). 
+You may wish to use the tidyverse package. 
+The following three parts have you explore some basic characteristics of the dataset. 
+Each row contains one group of the experiment. Each group has a different combination of age, alcohol consumption, and tobacco consumption. The number of cancer cases and number of controls (individuals without cancer) are reported for each group. 
+
+3a. How many groups are in the study? 
+nrow(esoph) 
+## [1] 88 
+
+3b. How many cases are there? 
+Save this value as all_cases for later problems. 
+all_cases <- sum(esoph$ncases) 
+all_cases 
+## [1] 200 
+
+3c. How many controls are there? 
+Save this value as all_controls for later problems. Remember from the instructions that controls are individuals without cancer. 
+all_controls <- sum(esoph$ncontrols) 
+all_controls 
+## [1] 975 
+
+4a. What is the probability that a subject in the highest alcohol consumption group is a cancer case? 
+Remember that the total number of individuals in the study includes people with cancer (cases) and people without cancer (controls), so you must add both values together to get the denominator for your probability. 
+esoph %>% 
+  filter(alcgp == "120+") %>% 
+  summarize(ncases = sum(ncases), ncontrols = sum(ncontrols)) %>% 
+  mutate(p_case = ncases / (ncases + ncontrols)) %>% 
+  pull(p_case) 
+## [1] 0.402 
+
+4b. What is the probability that a subject in the lowest alcohol consumption group is a cancer case? 
+esoph %>% 
+  filter(alcgp == "0-39g/day") %>% 
+  summarize(ncases = sum(ncases), ncontrols = sum(ncontrols)) %>% 
+  mutate(p_case = ncases / (ncases + ncontrols)) %>% 
+  pull(p_case) 
+## [1] 0.0653 
+
+4c. Given that a person is a case, what is the probability that they smoke 10g or more a day? 
+tob_cases <- esoph %>% 
+  filter(tobgp != "0-9g/day") %>% 
+  pull(ncases) %>% 
+  sum() 
+tob_cases/all_cases 
+## [1] 0.61 
+
+4d. Given that a person is a control, what is the probability that they smoke 10g or more a day? 
+tob_controls <- esoph %>% 
+  filter(tobgp != "0-9g/day") %>% 
+  pull(ncontrols) %>% 
+  sum() 
+tob_controls/all_controls 
+## [1] 0.462 
+
+5a. For cases, what is the probability of being in the highest alcohol group? 
+high_alc_cases <- esoph %>% 
+  filter(alcgp == "120+") %>% 
+  pull(ncases) %>% 
+  sum() 
+p_case_high_alc <- high_alc_cases/all_cases 
+p_case_high_alc 
+## [1] 0.225 
+
+5b. For cases, what is the probability of being in the highest tobacco group? 
+high_tob_cases <- esoph %>% 
+  filter(tobgp == "30+") %>% 
+  pull(ncases) %>% 
+  sum() 
+p_case_high_tob <- high_tob_cases/all_cases 
+p_case_high_tob 
+## [1] 0.155 
+
+5c. For cases, what is the probability of being in the highest alcohol group and the highest tobacco group? 
+high_alc_tob_cases <- esoph %>% 
+  filter(alcgp == "120+" & tobgp == "30+") %>% 
+  pull(ncases) %>% 
+  sum() 
+p_case_high_alc_tob <- high_alc_tob_cases/all_cases 
+p_case_high_alc_tob 
+## [1] 0.05 
+
+5d. For cases, what is the probability of being in the highest alcohol group or the highest tobacco group? 
+p_case_either_highest <- p_case_high_alc + p_case_high_tob - p_case_high_alc_tob 
+p_case_either_highest 
+## [1] 0.33 
+
+6a. For controls, what is the probability of being in the highest alcohol group? 
+high_alc_controls <- esoph %>% 
+  filter(alcgp == "120+") %>% 
+  pull(ncontrols) %>% 
+  sum() 
+p_control_high_alc <- high_alc_controls/all_controls 
+p_control_high_alc 
+## [1] 0.0687 
+
+6b. How many times more likely are cases than controls to be in the highest alcohol group? 
+p_case_high_alc/p_control_high_alc 
+## [1] 3.27 
+
+6c. For controls, what is the probability of being in the highest tobacco group? 
+high_tob_controls <- esoph %>% 
+  filter(tobgp == "30+") %>% 
+  pull(ncontrols) %>% 
+  sum() 
+p_control_high_tob <- high_tob_controls/all_controls 
+p_control_high_tob 
+## [1] 0.0841 
+
+6d. For controls, what is the probability of being in the highest alcohol group and the highest tobacco group? 
+high_alc_tob_controls <- esoph %>% 
+  filter(alcgp == "120+" & tobgp == "30+") %>% 
+  pull(ncontrols) %>% 
+  sum() 
+
+ 
+
+p_control_high_alc_tob <- high_alc_tob_controls/all_controls 
+p_control_high_alc_tob 
+## [1] 0.0133 
+
+6e. For controls, what is the probability of being in the highest alcohol group or the highest tobacco group? 
+p_control_either_highest <- p_control_high_alc + p_control_high_tob - p_control_high_alc_tob 
+p_control_either_highest 
+## [1] 0.139 
+
+6f. How many times more likely are cases than controls to be in the highest alcohol group or the highest tobacco group? 
+p_case_either_highest/p_control_either_highest 
+## [1] 2.37 
+
+
+
