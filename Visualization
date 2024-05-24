@@ -1,0 +1,689 @@
+#plot
+     x <- murders$population / 10^6
+     y <- murders$total
+     plot(x, y)
+     #For a quick plot that avoids accessing variables twice
+     with(murders, plot(population, total))
+     x <- with(murders, total / population * 100000)
+     hist(x)
+     murders$state[which.max(x)]
+     murders$rate <- with(murders, total / population * 100000)
+     boxplot(rate~region, data = murders)
+     x <- matrix(1:120, 12, 10)
+     image(x)
+     
+     
+     #Conditional expressions
+     a <- 0
+     if(a!=0){
+       print(1/a)
+     } else{
+       print("No reciprocal for 0.")
+     }
+     
+     library(dslabs)
+     data(murders)
+     murder_rate <- murders$total / murders$population*100000
+     
+     ind <- which.min(murder_rate)
+     if(murder_rate[ind] < 0.5){
+       print(murders$state[ind])
+     } else{
+       print("No state has murder rate that low")
+     }
+     
+     if(murder_rate[ind] < 0.25){
+       print(murders$state[ind])
+     } else{
+       print("No state has a murder rate that low.")
+     }
+     
+     a <- 0
+     ifelse(a > 0, 1/a, NA)
+     
+     a <- c(0, 1, 2, -4, 5)
+     result <- ifelse(a > 0, 1/a, NA)
+     
+     
+     #Defining functions
+     data(na_example)
+     no_nas <- ifelse(is.na(na_example), 0, na_example)
+     sum(is.na(no_nas))
+     
+     
+     z <- c(TRUE, TRUE, FALSE)
+     #if any is true return true
+     any(z)
+     #> [1] TRUE
+     #if all entries are true return true instead return false.
+     all(z)
+     #> [1] FALSE
+     
+     
+    #Defining functions
+     avg <- function(x){
+       s <- sum(x)
+       n <- length(x)
+       s/n
+     }
+     
+     x <- 1:100
+     identical(mean(x), avg(x))
+     s <- 3
+     avg(1:10)
+     #> [1] 5.5
+     s
+     #> [1] 3
+         
+     avg <- function(x, arithmetic = TRUE){
+       n <- length(x)
+       ifelse(arithmetic, sum(x)/n, prod(x)^(1/n))
+     }
+     
+     
+     #For-loops
+     
+     search()
+     compute_s_n <- function(n){
+       x <- 1:n
+       sum(x)
+     }
+     
+     for(i in 1:5){
+       print(i)
+     }
+     
+     
+     m <- 25
+     s_n <- vector(length = m) # create an empty vector
+     for(n in 1:m){
+       s_n[n] <- compute_s_n(n)
+     }
+     
+     n <- 1:m
+     plot(n, s_n)
+     
+     #Vectorization and functionals
+     x <- 1:10
+     sqrt(x)
+     y <- 1:10
+     x*y
+     
+     
+     #The tidyverse
+     library(tidyverse)
+     
+     
+     #Manipulating data frames
+     library(dslabs)
+     data("murders")
+     murders <- mutate(murders, rate = total / population * 100000)
+     df <- data.frame(female = female_percentiles, male = male_percentiles)
+     
+     #Subsetting with filter
+     
+     filter(murders, rate <= 0.71)
+     new_table <- select(murders, state, region, rate)
+     filter(new_table, rate <= 0.71)
+     data(murders)
+     library(dplyr)
+     
+     murders %>% select(state, region, rate) %>% filter(rate <= 0.71)
+     murders <- mutate(murders, rate = total / population * 100000,
+                       rank = rank(-rate))
+     
+     my_states <- filter(murders, region %in% c("Northeast", "West") &
+                           rate < 1)
+     
+     
+     select(my_states, state, rate, rank)
+     
+     
+     mutate(murders, rate = total / population * 100000,
+            rank = rank(-rate)) %>%
+       select(state, rate, rank)
+     
+     
+     #summarize
+     
+     
+     library(dplyr)
+     library(dslabs)
+     data(heights)
+     
+     s <- heights %>%
+       filter(sex == "Female") %>%
+       summarize(average = mean(height), standard_deviation = sd(height))
+     s
+     
+     s$average
+     s$standard_deviation
+     
+
+     heights %>%
+       filter(sex == "Female") %>%
+       summarize(median = median(height), minimum = min(height),
+                 maximum = max(height))
+
+      
+     heights %>%
+       filter(sex == "Female") %>%
+       summarize(range = quantile(height, c(0, 0.5, 1)))
+      
+     summarize(murders, mean(rate))
+     
+     
+     #group_by
+      
+     heights %>% group_by(sex)
+     
+     heights %>%
+       group_by(sex) %>%
+       summarize(average = mean(height), standard_deviation = sd(height))
+     
+     
+     murders %>%
+       group_by(region) %>%
+       summarize(median_rate = median(rate))
+     
+     #Sorting data frames
+     murders %>%
+       arrange(population) %>%
+       head()
+     
+     
+     #Nested sorting
+     murders %>%
+       arrange(region, rate) %>%
+       head()
+     
+     #Top
+     murders %>% top_n(5, rate)
+     
+     
+     #case_when
+     x <- c(-2, -1, 0, 1, 2)
+     case_when(x < 0 ~ "Negative", x > 0 ~ "Positive", TRUE ~ "Zero")
+     
+     between(x, a, b)
+     x >= a & x <= b
+     
+     
+     #Paths and the working directory
+     filename <- "murders.csv"
+     dir <- system.file("extdata", package = "dslabs")
+     fullpath <- file.path(dir, filename)
+     file.copy(fullpath, "murders.csv")
+     
+     
+     library(tidyverse)
+     dat <- read_csv(filename)
+     
+     
+     #Introduction to data visualization
+     library(dplyr)
+     library(ggplot2)
+     ggplot(data = murders)
+     murders %>% ggplot()
+     p <- ggplot(data = murders)
+     class(p)
+     
+     murders %>% ggplot() +
+       geom_point(aes(x = population/10^6, y = total))
+     
+     
+     
+     # define x as vector of male heights
+     library(tidyverse)
+     library(dslabs)
+     data(heights)
+     index <- heights$sex=="Male"
+     x <- heights$height[index]
+     
+     # calculate the mean and standard deviation manually
+     average <- sum(x)/length(x)
+     SD <- sqrt(sum((x - average)^2)/length(x))
+     
+     # built-in mean and sd functions - note that the audio and printed values disagree
+     average <- mean(x)
+     SD <- sd(x)
+     c(average = average, SD = SD)
+     
+     # calculate standard units
+     z <- scale(x)
+     
+     # calculate proportion of values within 2 SD of mean
+     mean(abs(z) < 2)
+     
+     
+     #Using pnorm to calculate probabilities
+     
+     library(tidyverse)
+     library(dslabs)
+     data(heights)
+     x <- heights %>% filter(sex=="Male") %>% pull(height)
+     
+     1 - pnorm(70.5, mean(x), sd(x))
+     
+     
+     library(dslabs)
+     data(heights)
+     x <- heights$height[heights$sex == "Male"]
+     mean(x<=72) - mean(x<=69)
+     avg <- mean(x)
+     stdev <- sd(x)
+     pnorm(72,avg,stdev) - pnorm(69,avg,stdev)
+     
+     1-pnorm(84,69,3)
+     p <- 1-pnorm(84,69,3)
+     round(p * 10^9)
+     
+     quantile(data,q)
+     p <- seq(0.01, 0.99, 0.01)
+     quantile(data, p)
+     
+     
+     library(dslabs)
+     data(heights)
+     summary(heights$height)
+     
+     p <- seq(0.01, 0.99, 0.01)
+     percentiles <- quantile(heights$height, p)
+     percentiles[names(percentiles) == "25%"]
+     percentiles[names(percentiles) == "75%"]
+     
+     #The pnorm() function gives the probability that a value from a standard normal distribution will be less than or equal to a z-score value z
+     
+     
+     qnorm(p, mu, sigma)
+     qnorm(p)
+     p <- seq(0.01, 0.99, 0.01)
+     theoretical_quantiles <- qnorm(p, 69, 3)
+     
+     
+     
+     
+     # define x and z
+     library(tidyverse)
+     library(dslabs)
+     data(heights)
+     index <- heights$sex=="Male"
+     x <- heights$height[index]
+     z <- scale(x)
+     
+     
+     # proportion of data below 69.5
+     mean(x <= 69.5)
+     
+     # calculate observed and theoretical quantiles
+     p <- seq(0.05, 0.95, 0.05)
+     observed_quantiles <- quantile(x, p)
+     theoretical_quantiles <- qnorm(p, mean = mean(x), sd = sd(x))
+     
+     
+     
+     # make QQ-plot
+       plot(theoretical_quantiles, observed_quantiles)
+     abline(0,1)
+     
+     
+     # make QQ-plot with scaled values
+     observed_quantiles <- quantile(z, p)
+     theoretical_quantiles <- qnorm(p)
+     plot(theoretical_quantiles, observed_quantiles)
+     abline(0,1)
+     
+     
+     #Percentiles are the quantiles obtained when defining  as . They summarize the values at which a certain percent of the observations are equal to or less than that value.
+     #The 50th percentile is also known as the median.
+     #The quartiles are the 25th, 50th and 75th percentiles.
+     
+     
+     #In a boxplot, the box is defined by the 25th and 75th percentiles and the median is a horizontal line through the box. The whiskers show the range excluding outliers, and outliers are plotted separately as individual points.
+     
+     library(dslabs)
+     data(heights)
+     male <- heights$height[heights$sex=="Male"]
+     female <- heights$height[heights$sex=="Female"]
+     
+     female_percentiles <- quantile(female, seq(.1, .9, .2))
+     male_percentiles <- quantile(male, seq(.1, .9, .2))
+     df <- data.frame(male= male_percentiles, female= female_percentiles)
+     
+     #Exercise 1. Exploring the Galton Dataset - Average and Median
+    # For this chapter, we will use height data collected by Francis Galton for his genetics studies. Here we just use height of the children in the dataset:
+       
+     library(HistData)
+     data(Galton)
+     x <- Galton$child
+     mean(x)
+     median(x)
+     
+     #Exercise 2. Exploring the Galton Dataset - SD and MAD
+     #Now for the same data compute the standard deviation and the median absolute deviation (MAD).
+     
+     library(HistData)
+     data(Galton)
+     x <- Galton$child
+     sd(x)
+     mad(x)
+     
+     
+     #Exercise 3. Error impact on average
+     #In the previous exercises we saw that the mean and median are very similar and so are the standard deviation and MAD. This is expected since the data is approximated by a normal distribution which has this property.
+     
+     #Now suppose that Galton made a mistake when entering the first value, forgetting to use the decimal point. You can imitate this error by typing:
+     
+     library(HistData)
+     data(Galton)
+     x <- Galton$child
+     x_with_error <- x
+     x_with_error[1] <- x_with_error[1]*10
+     
+     #The data now has an outlier that the normal approximation does not account for. Let's see how this affects the average.
+     #Report how many inches the average grows after this mistake. Specifically, report the difference between the average of the data with the mistake x_with_error and the data without the mistake x
+     
+     library(HistData)
+     data(Galton)
+     x <- Galton$child
+     x_with_error <- x
+     x_with_error[1] <- x_with_error[1]*10
+     mean(x_with_error) - mean(x)
+     
+     #Exercise 4. Error impact on SD
+     #Report how many inches the SD grows after this mistake. Specifically, report the difference between the SD of the data with the mistake x_with_error and the data without the mistake x.
+     
+     x_with_error <- x
+     x_with_error[1] <- x_with_error[1]*10
+     sd(x_with_error) - sd(x)
+     
+     
+     #Exercise 5. Error impact on median
+     
+     x_with_error <- x
+     x_with_error[1] <- x_with_error[1]*10
+     median(x_with_error) - median(x)
+     
+     #Exercise 6. Error impact on MAD
+     #Report how many inches the MAD grows after the mistake. Specifically, report the difference between the MAD of the data with the mistake x_with_error and the data without the mistake x.
+     
+     x_with_error <- x
+     x_with_error[1] <- x_with_error[1]*10
+     mad(x_with_error) - mad(x)
+     
+     
+     #Exercise 7. Usefulness of EDA
+     #How could you use exploratory data analysis to detect that an error was made?
+      
+     -A boxplot, histogram, or qq-plot would reveal a clear outlier. 
+     
+   
+     #Exercise 8. Using EDA to explore changes
+     #We have seen how the average can be affected by outliers. But how large can this effect get? This of course depends on the size of the outlier and the size of the dataset.
+     
+     #To see how outliers can affect the average of a dataset, let's write a simple function that takes the size of the outlier as input and returns the average.
+     
+     x <- Galton$child
+     error_avg <- function(k){
+       x[1] <- k 
+       mean(x)
+     }
+     error_avg(10000)
+     error_avg(-10000)
+     
+     
+     #2.1 Basics of ggplot2
+     #Creating a New Plot
+     
+     ggplot(data = x)
+     ggplot(x)
+     x %>% ggplot()
+     
+     library(tidyverse)
+     library(dslabs)
+     data(murders)
+     
+     ggplot(data = murders)
+     
+     murders %>% ggplot()
+     
+     p <- ggplot(data = murders)
+     class(p)
+     print(p)    # this is equivalent to simply typing p
+     p
+     
+     
+     #Adding layers to a plot
+     
+     
+     
+     library(tidyverse)
+     library(dslabs)
+     data(murders)
+     
+     murders %>% ggplot() +
+       geom_point(aes(x = population/10^6, y = total))
+     
+     # add points layer to predefined ggplot object
+       p <- ggplot(data = murders)
+       p + geom_point(aes(population/10^6, total))
+     
+     # add text layer to scatterplot
+     p + geom_point(aes(population/10^6, total)) +
+       geom_text(aes(population/10^6, total, label = abb))
+     
+     
+     # no error from this call
+     p_test <- p + geom_text(aes(population/10^6, total, label = abb))
+     
+     # error - "abb" is not a globally defined variable and cannot be found outside of aes
+     p_test <- p + geom_text(aes(population/10^6, total), label = abb)
+     
+     # change the size of the points
+     p + geom_point(aes(population/10^6, total), size = 3) +
+       geom_text(aes(population/10^6, total, label = abb))
+     
+     # move text labels slightly to the right
+     p + geom_point(aes(population/10^6, total), size = 3) +
+       geom_text(aes(population/10^6, total, label = abb), nudge_x = 1)
+     
+     
+     # simplify code by adding global aesthetic
+     p <- murders %>% ggplot(aes(population/10^6, total, label = abb))
+     p + geom_point(size = 3) +
+       geom_text(nudge_x = 1.5)
+     
+     
+     # local aesthetics override global aesthetics
+     p + geom_point(size = 3) +
+       geom_text(aes(x = 10, y = 800, label = "Hello there!"))
+     
+     
+     
+     # define p
+     library(tidyverse)
+     library(dslabs)
+     data(murders)
+     p <- murders %>% ggplot(aes(population/10^6, total, label = abb))
+     
+     # log base 10 scale the x-axis and y-axis
+     p + geom_point(size = 3) +
+       geom_text(nudge_x = 0.05) +
+       scale_x_continuous(trans = "log10") +
+       scale_y_continuous(trans = "log10")
+     
+     # efficient log scaling of the axes
+     p + geom_point(size = 3) +
+       geom_text(nudge_x = 0.075) +
+       scale_x_log10() +
+       scale_y_log10()
+     
+     p + geom_point(size = 3) +
+       geom_text(nudge_x = 0.075) +
+       scale_x_log10() +
+       scale_y_log10() +
+       xlab("Population in millions (log scale)") +
+       ylab("Total number of murders (log scale)") +
+       ggtitle("US Gun Murders in 2010")
+     
+     
+     
+     
+     # redefine p to be everything except the points layer
+     p <- murders %>%
+       ggplot(aes(population/10^6, total, label = abb)) +
+       geom_text(nudge_x = 0.075) +
+       scale_x_log10() +
+       scale_y_log10() +
+       xlab("Population in millions (log scale)") +
+       ylab("Total number of murders (log scale)") +
+       ggtitle("US Gun Murders in 2010")
+     
+     # make all points blue
+     p + geom_point(size = 3, color = "blue")
+     
+     # color points by region
+     p + geom_point(aes(col = region), size = 3)
+     
+     # define average murder rate
+     r <- murders %>%
+       summarize(rate = sum(total) / sum(population) * 10^6) %>%
+       pull(rate)
+     
+     # basic line with average murder rate for the country
+     p <- p + geom_point(aes(col = region), size = 3) +
+       geom_abline(intercept = log10(r))    # slope is default of 1
+     
+     # change line to dashed and dark grey, line under points
+     p + 
+       geom_abline(intercept = log10(r), lty = 2, color = "darkgrey") +
+       geom_point(aes(col = region), size = 3)
+     
+     # capitalize legend title
+     p <- p + scale_color_discrete(name = "Region") 
+     
+     # theme used for graphs in the textbook and course
+     library(dslabs)
+     ds_theme_set()
+     install.packages("ggthemes") 
+     
+     # themes from ggthemes
+     library(ggthemes)
+     p + theme_economist()    #style of the Economist magazine
+     p + theme_fivethirtyeight()    #style of the FiveThirtyEight website
+     
+     
+     #Constructing ALL the graphic
+     
+     # load libraries
+     library(tidyverse)
+     library(ggrepel)
+     library(ggthemes)
+     library(dslabs)
+     data(murders)
+     
+     # define the intercept
+     r <- murders %>%
+       summarize(rate = sum(total) / sum(population) * 10^6) %>%
+       .$rate
+     
+     # make the plot, combining all elements
+     murders %>%
+       ggplot(aes(population/10^6, total, label = abb)) +
+       geom_abline(intercept = log10(r), lty = 2, color = "darkgrey") +
+       geom_point(aes(col = region), size = 3) +
+      geom_text_repel() +
+       scale_x_log10() +
+       scale_y_log10() +
+       xlab("Population in millions (log scale)") +
+       ylab("Total number of murders (log scale)") +
+       ggtitle("US Gun Murders in 2010") +
+       scale_color_discrete(name = "Region") +
+       theme_economist()
+     
+     
+     #Code: Adding themes
+     # theme used for graphs in the textbook and course
+     library(dslabs)
+     ds_theme_set()
+     
+     # themes from ggthemes
+     library(ggthemes)
+     p + theme_economist()    # style of the Economist magazine
+     p + theme_fivethirtyeight()    # style of the FiveThirtyEight website
+     
+     #Code: Putting it all together to assemble the plot
+     
+     # load libraries
+     library(tidyverse)
+     library(ggrepel)
+     library(ggthemes)
+     library(dslabs)
+     data(murders)
+     
+     # define the intercept
+     r <- murders %>%
+       summarize(rate = sum(total) / sum(population) * 10^6) %>%
+       .$rate
+     
+     # make the plot, combining all elements
+     murders %>%
+       ggplot(aes(population/10^6, total, label = abb)) +
+       geom_abline(intercept = log10(r), lty = 2, color = "darkgrey") +
+       geom_point(aes(col = region), size = 3) +
+      # geom_text_repel() +
+       scale_x_log10() +
+       scale_y_log10() +
+       xlab("Population in millions (log scale)") +
+       ylab("Total number of murders (log scale)") +
+       ggtitle("US Gun Murders in 2010") +
+       scale_color_discrete(name = "Region") +
+       theme_economist()
+     
+     
+     
+     
+     p <- ggplot(murders)
+     
+     Exercise 3. Pipes
+     
+     #Now we are going to review the use of pipes by seeing how they can be used with ggplot.
+     
+     #Using the pipe %>%, create an object p associated with the heights dataset instead of with the murders dataset as in previous exercises.
+     
+     data(heights)
+     # define ggplot object called p like in the previous exercise but using a pipe 
+     p <- heights %>% ggplot()
+     
+     
+     
+     
+     Exercise 5. geom_point 1
+     To create a scatter plot, we add a layer with the function geom_point. The aesthetic mappings require us to define the x-axis and y-axis variables respectively. So the code looks like this:
+       
+       murders %>% ggplot(aes(x = , y = )) + geom_point()
+     
+     except we have to fill in the blanks to define the two variables x and y.
+     
+     Fill out the sample code with the correct variable names to plot total murders versus population size.
+     
+     
+     murders %>% ggplot(aes(x = population, y = total)) +
+       geom_point()
+     
+     
+     #Exercise 8. geom_point text
+     #You can also add labels to the points on a plot.
+     
+    # Rewrite the code from the previous exercise to:
+       
+     #  add a label aesthetic to aes equal to the state abbreviation use geom_label instead of geom_point
+     
+     library(dplyr)
+     library(ggplot2)
+     library(dslabs)
+     data(murders)
+     ## edit the next line to add the label
+     murders %>% ggplot(aes(population, total,label = abb)) +
+       geom_label()
+     
